@@ -148,8 +148,8 @@ pub fn wrap_trait(meta: TokenStream, input: TokenStream) -> Result<TokenStream, 
         pub fn #access_fn_name<T>(node: ::godot::prelude::Gd<T>) -> Option<Box<dyn #trait_name>>
         where T : Inherits<::godot::classes::Node> {
             let mut node: ::godot::prelude::Gd<::godot::classes::Node> = node.upcast();
-            if node.has_method(#fn_name_string.into()) {
-                let method_result = node.call(#fn_name_string.into(), &[]);
+            if node.has_method(#fn_name_string) {
+                let method_result = node.call(#fn_name_string, &[]);
                 let wrapped : ::godot::prelude::Gd<#wrapper_struct_name> = method_result.to::<::godot::prelude::Gd<#wrapper_struct_name>>();
                 let boxed : Box<dyn #trait_name> = Box::new(wrapped);
                 return Some(boxed);
@@ -163,8 +163,8 @@ pub fn wrap_trait(meta: TokenStream, input: TokenStream) -> Result<TokenStream, 
         pub fn #access_rec_fn_name<T>(node: ::godot::prelude::Gd<T>) -> Option<Box<dyn #trait_name>>
         where T : Inherits<::godot::classes::Node> {
             let mut node: ::godot::prelude::Gd<::godot::classes::Node> = node.upcast();
-            if node.has_method(#fn_name_string.into()) {
-                let method_result = node.call(#fn_name_string.into(), &[]);
+            if node.has_method(#fn_name_string) {
+                let method_result = node.call(#fn_name_string, &[]);
                 let wrapped : ::godot::prelude::Gd<#wrapper_struct_name> = method_result.to::<::godot::prelude::Gd<#wrapper_struct_name>>();
                 let boxed : Box<dyn #trait_name> = Box::new(wrapped);
                 return Some(boxed);
@@ -181,7 +181,7 @@ pub fn wrap_trait(meta: TokenStream, input: TokenStream) -> Result<TokenStream, 
                     let prev_level = std::mem::replace(&mut current_level, Array::new());
                     for n in prev_level.iter_shared() {
                         for c in n.get_children_ex().include_internal(true).done().iter_shared() {
-                            current_level.push(c);
+                            current_level.push(&c);
                         }
                     }
                 }
